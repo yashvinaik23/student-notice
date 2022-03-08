@@ -1,30 +1,30 @@
-import React, { Fragment, useRef, useState } from "react";
-import ErrorModal from "../../../UI/ErrorModal";
+import React, { Fragment, useRef } from "react";
+
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
+import { PostContact } from "../../../store/actions";
 import Card from "../../../UI/Card";
 import Button from "../../../UI/Button";
-import classes from "./contactForm.module.css";
+import classes from "./ContactForm.module.css";
 
-const ContactForm = () => {
+const ContactForm = props => {
   const nameRef = useRef("");
   const descriptionRef = useRef("");
   const numberRef = useRef("");
   const emailRef = useRef("");
-  const [error, setError] = useState();
 
-  const errorHandler = () => {
-    setError(null);
+  const formHandler = () => {
+    const contact = {
+      name: nameRef.current.value,
+      description: descriptionRef.current.value,
+      number: numberRef.current.value,
+      email: emailRef.current.value,
+    };
+    props?.PostContact(contact);
   };
-  const formHandler = () => {};
 
   return (
     <Fragment>
-      {error && (
-        <ErrorModal
-          title={error.title}
-          message={error.message}
-          onConfirm={errorHandler}
-        />
-      )}
       <Card className={classes.input}>
         <form>
           <label htmlFor="name">Name</label>
@@ -44,4 +44,12 @@ const ContactForm = () => {
   );
 };
 
-export default ContactForm;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      PostContact: contact => PostContact(contact),
+    },
+    dispatch
+  );
+};
+export default connect(null, mapDispatchToProps)(ContactForm);

@@ -1,15 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Fragment } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { bindActionCreators } from "@reduxjs/toolkit";
+
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import ErrorModal from "../UI/ErrorModal";
-import { Fragment } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginActions } from "../store/logIn";
-import { userAction } from "../store/user";
+
+import { SignUpUser } from "../store/actions";
 
 import classes from "./AddUser.module.css";
-const axios = require("axios");
 
 const SignIn = props => {
   const [error, setError] = useState();
@@ -19,7 +19,6 @@ const SignIn = props => {
   const contactRef = useRef("");
   const addressRef = useRef("");
   const posRef = useRef("");
-  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -65,51 +64,17 @@ const SignIn = props => {
       });
       return;
     }
-    dispatch(loginActions.login());
 
-    // const user = {
-    //   name: nameRef.current.value,
-    //   email: emailRef.current.value,
-    //   password: passwordRef.current.value,
-    //   contact: contactRef.current.value,
-    //   address: addressRef.current.value,
-    // };
-    // console.log(user);
-
-    async function addUserHandler(user) {
-      const response = await axios.post("http://localhost:8000/reg", {
-        name: nameRef.current.value,
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-        contact: contactRef.current.value,
-        address: addressRef.current.value,
-        position: posRef.current.value,
-      });
-
-      dispatch({ type: "login" });
-      dispatch(userAction.signIn(response.data.user));
-
-      console.log(response.data.user);
-    }
-    addUserHandler();
-    // axios
-    //   .post("http://localhost:8000/reg", {
-    //     name: nameRef.current.value,
-    //     email: emailRef.current.value,
-    //     password: passwordRef.current.value,
-    //     contact: contactRef.current.value,
-    //     address: addressRef.current.value,
-    //   })
-    //   .then(response => {
-    //     console.log(response);
-    //     dispatch(userAction.signIn(response.data.user));
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //   });
-
-    dispatch({ type: "login" });
-    dispatch(userAction.teacher());
+    const user = {
+      name: nameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      contact: contactRef.current.value,
+      address: addressRef.current.value,
+      position: posRef.current.value,
+    };
+    console.log(user);
+    props?.SignUpUser(user);
 
     const handleClick = () => {
       history.push("/");
@@ -154,4 +119,12 @@ const SignIn = props => {
     </Fragment>
   );
 };
-export default SignIn;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      SignUpUser: user => SignUpUser(user),
+    },
+    dispatch
+  );
+};
+export default connect(null, mapDispatchToProps)(SignIn);

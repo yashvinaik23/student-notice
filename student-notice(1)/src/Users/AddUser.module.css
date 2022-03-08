@@ -37,9 +37,9 @@
 
 .input input:focus {
   outline: none;
-  border-color: #4f005f;
+  border-color: #a2b7ff;
 }
 
-.invalid{
-  border:1px solid #ff0000
-  }
+.invalid {
+  border: 1px solid #ff0000;
+}

@@ -1,12 +1,14 @@
-import React, { Fragment, useState, useRef, useEffect } from "react";
-import axios from "axios";
+import React, { Fragment, useState, useRef } from "react";
+
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginActions } from "../store/logIn";
-import { userAction } from "../store/user";
+
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
+
 import ErrorModal from "../UI/ErrorModal";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
+import { LogInUser } from "../store/actions";
 
 import classes from "./AddUser.module.css";
 
@@ -21,24 +23,21 @@ const AddUser = props => {
     title: "",
     message: "",
   });
-  const dispatch = useDispatch();
+  
 
   const addUserHandler = event => {
     event.preventDefault();
     console.log(posRef.current.value);
 
-    // if (!emailRef.current.value.includes("@gmail.com")) {
-    //   setError({
-    //     title: "Invalid input",
-    //     message: "Please enter a valid email.",
-    //   });
-    //   return;
-    // }
-    // if (!emailRef.current.value.includes("@gmail.com")) {
-    //   inputClass: "invalid";
-    // }
+    if (!emailRef.current.value.includes("@gmail.com")) {
+      setError({
+        title: "Invalid input",
+        message: "Please enter a valid email.",
+      });
+      return;
+    }
 
-    if (passwordRef?.current?.value?.trim().length < 8) {
+    if (passwordRef.current.value?.trim().length < 8) {
       setError({
         status: true,
         title: "Invalid input",
@@ -46,34 +45,12 @@ const AddUser = props => {
       });
       return;
     }
-
-    //
-    axios
-      .post("http://localhost:8000/users/login", {
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-        position: posRef.current.value,
-      })
-      .then(response => {
-        console.log(response.status);
-        if (response.status !== 204) {
-          setError({
-            ...error,
-            status: true,
-            title: "Invalid input",
-            message: "Please enter a valid password(min 8 characters)",
-          });
-          return;
-        }
-        // debugger;
-        // dispatch(userAction.teacher());
-        // dispatch(loginActions.login());
-        // console.log(response.status);
-        // dispatch(userAction.logIn(response.data.user));
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    const user = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      position: posRef.current.value,
+    };
+    props?.LogInUser(user);
 
     const handleClick = () => {
       history.push("/");
@@ -111,11 +88,21 @@ const AddUser = props => {
             <option value="Teacher">Teacher</option>
           </select>
           <Button onClick={addUserHandler}>Submit</Button>
-          <Button onClick={props.formManipulate}>Sign In</Button>
+          <Button onClick={props.formManipulate}>Sign Up</Button>
         </form>
       </Card>
     </Fragment>
   );
 };
 
-export default AddUser;
+// export default AddUser;
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      LogInUser: user => LogInUser(user),
+    },
+    dispatch
+  );
+};
+export default connect(null, mapDispatchToProps)(AddUser);

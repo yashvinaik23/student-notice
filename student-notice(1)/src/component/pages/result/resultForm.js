@@ -1,4 +1,6 @@
 import React, { Fragment, useRef, useState } from "react";
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
 import ErrorModal from "../../../UI/ErrorModal";
 import Card from "../../../UI/Card";
 import Button from "../../../UI/Button";

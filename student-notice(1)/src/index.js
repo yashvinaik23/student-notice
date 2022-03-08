@@ -8,7 +8,7 @@ import store from "./store/index";
 // import { createStore, compose, applyMiddleware } from "redux";
 // import reducer from "./NoticeStore/reducer/rootReducer";
 // import thunk from "redux-thunk";
-// const store = createStore(reducer, compose(applyMiddleware(thunk)));
+ //const store = createStore(store, compose(applyMiddleware(thunk)));
 ReactDOM.render(
   <Provider store={store}>
     <App />

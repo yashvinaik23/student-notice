@@ -5,7 +5,7 @@ const holidays = mongoose.model("hoiday", {
   description: {
     type: String,
   },
-  date: { type: String, required: true },
+  date: { type: String, required: true, unique: true },
 });
 
 module.exports = holidays;

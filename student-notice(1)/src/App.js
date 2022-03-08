@@ -1,15 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Navbar from "./component/navigation/Navbar";
-import Home from "./component/pages/home";
-import Result from "./component/pages/result";
-import Contact from "./component/pages/contact";
-
-import Form from "./Users/Form";
-
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginActions } from "./store/logIn";
+import Navbar from "./component/navigation/Navbar";
+import Home from "./component/pages/home/home";
+import Result from "./component/pages/result/result";
+import Contact from "./component/pages/contact/Contact";
+import Form from "./Users/Form";
 
 function App() {
   const isLogin = useSelector(state => state.logIn.isLoggedIn);
@@ -17,6 +14,8 @@ function App() {
   const dispatch = useDispatch();
 
   function logoutHandler() {
+    localStorage.removeItem("isLoggedIn");
+
     dispatch(loginActions.logout());
     window.location.reload(false);
   }
@@ -30,10 +29,10 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route path="/result" component={Result} />
             <Route path="/contact" component={Contact} />
-            <Route path="/Logout" component={logoutHandler} />
+            <Route path="/logout" component={logoutHandler} />
           </>
         )}
-        {!isLogin && <Route path="/Login" component={Form} />}
+        {!isLogin && <Route path="/login" component={Form} />}
       </Switch>
     </Router>
   );

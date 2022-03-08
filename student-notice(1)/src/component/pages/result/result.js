@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import AvailableResults from "./AvailableResults";
 import ResultForm from "./resultForm";
 
-const ResultShow = () => {
+const Result = () => {
   const user = useSelector(state => state.user.user);
 
   return (
@@ -14,4 +14,4 @@ const ResultShow = () => {
   );
 };
 
-export default ResultShow;
+export default Result;

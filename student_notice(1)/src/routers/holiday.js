@@ -1,5 +1,5 @@
 const express = require("express");
-const auth = require("../middleware/auth");
+
 const holidays = require("../models/holiday");
 const router = new express.Router();
 
@@ -17,7 +17,7 @@ router.post("/holiday", async (req, res) => {
   const holiday = new holidays({
     ...req.body,
   });
-
+  console.log(holiday);
   try {
     await holiday.save();
     res.status(201).send(holiday);

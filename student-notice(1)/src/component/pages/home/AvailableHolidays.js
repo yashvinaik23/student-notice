@@ -1,42 +1,52 @@
-import classes from "./AvailableHolidays.module.css";
+import { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { GetHoliday } from "../../../store/actions";
 import HolidayItem from "./HomeItem/HolidayItem";
 import Card from "../../../UI/Card";
-import { useState } from "react";
-import axios from "axios";
 
-const AvailableHolidays = () => {
-  const [holiday, setHoliday] = useState([]);
-  const [show, setShow] = useState(false);
+import classes from "./AvailableHolidays.module.css";
 
-  const getHoliday = () => {
-    axios.get("http://localhost:8000/getholiday").then(response => {
-      setHoliday(response.data);
-      console.log(response);
-      setShow(!show);
-    });
+const AvailableHolidays = props => {
+  const getHoliday = async () => {
+    await props?.GetHoliday();
   };
+  useEffect(() => {
+    getHoliday();
+  }, []);
 
-  const holidaysList = holiday.map(meal => (
+  const holidaysList = props?.holiday.map(meal => (
     <HolidayItem
       key={meal.id}
       name={meal.name}
       description={meal.description}
-      price={meal.date}
+      date={meal.date}
     />
   ));
 
   return (
     <div>
-      <button className={classes.button} onClick={getHoliday}>
-        {show ? "Hide" : "Get Holiday"}
-      </button>
       <section className={classes.meals}>
         <Card>
-          <ul>{show && holidaysList}</ul>
+          <ul>{holidaysList}</ul>
         </Card>
       </section>
     </div>
   );
 };
 
-export default AvailableHolidays;
+const mapStateToProps = state => {
+  return {
+    holiday: state.user.holiday,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      GetHoliday: () => GetHoliday(),
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AvailableHolidays);

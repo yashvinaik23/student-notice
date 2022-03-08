@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialUserState = {
   user: { name: "Student Notice" },
+  holiday: [],
+  contact: [],
   isTeacher: false,
-  isLogin:false,
-  position:""
+  isLogin: false,
+  position: "",
 };
 
 const userSlice = createSlice({
@@ -18,16 +20,18 @@ const userSlice = createSlice({
     logIn(state, action) {
       console.log(action.payload);
       state.user = action.payload;
-      state.position = action.payload.position
-      state.isLogin = true
+      state.position = action.payload.position;
+      state.isLogin = true;
+    },
+    storeHoliday(state, action) {
+      state.holiday = action.payload;
+    },
+    storeContact(state, action) {
+      state.contact = action.payload;
     },
     teacher(state) {
-      if (state.user.position === "Teacher") {
-        state.isTeacher = true;
-        return;
-      } else {
-        state.isTeacher = false;
-      }
+  
+      state.isTeacher = state.user.position === "Teacher" ? true : false;
     },
   },
 });

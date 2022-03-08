@@ -1,22 +1,24 @@
-import classes from "./AvailableContacts.module.css";
+import { useEffect, useState } from "react";
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
+import { GetContact } from "../../../store/actions";
 import ContactItem from "./ContactItem/ContactItem";
 import Card from "../../../UI/Card";
-import axios from "axios";
-import { useState } from "react";
 
-const AvailableContacts = () => {
-  const [contact, setContact] = useState([]);
+import classes from "./AvailableContacts.module.css";
+
+const AvailableContacts = props => {
+  //const [contact, setContact] = useState([]);
   const [show, setShow] = useState(false);
 
-  const getContact = () => {
-    axios.get("http://localhost:8000/getcontact").then(response => {
-      setContact(response.data);
-      console.log(response);
-      setShow(!show);
-    });
+  const getContact = async () => {
+    await props?.GetContact();
+    setShow(!show);
   };
-
-  const contactList = contact.map(meal => (
+  useEffect(() => {
+    getContact();
+  }, []);
+  const contactList = props?.contact.map(meal => (
     <ContactItem
       key={meal.id}
       name={meal.name}
@@ -27,9 +29,6 @@ const AvailableContacts = () => {
 
   return (
     <div>
-      <button className={classes.button} onClick={getContact}>
-        {show ? "Hide" : "Get Contact"}
-      </button>
       <section className={classes.meals}>
         <Card>
           <ul>{show && contactList}</ul>
@@ -38,5 +37,18 @@ const AvailableContacts = () => {
     </div>
   );
 };
+const mapStateToProps = state => {
+  return {
+    contact: state.user.contact,
+  };
+};
 
-export default AvailableContacts;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      GetContact: () => GetContact(),
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AvailableContacts);
