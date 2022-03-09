@@ -20,6 +20,9 @@ const HolidayForm = props => {
       date: dateRef.current.value,
     };
     props?.PostHoliday(holiday);
+    nameRef.current.value = "";
+    descriptionRef.current.value = "";
+    dateRef.current.value = "";
   };
 
   return (
@@ -31,8 +34,8 @@ const HolidayForm = props => {
 
           <label htmlFor="description">Description</label>
           <input id="description" type="text" ref={descriptionRef} />
-          <label htmlFor="number">Date</label>
-          <input id="number" type="text" ref={dateRef} />
+          <label htmlFor="date">Date</label>
+          <input id="date" type="date" ref={dateRef} />
 
           <Button onClick={formHandler}>Submit</Button>
         </form>

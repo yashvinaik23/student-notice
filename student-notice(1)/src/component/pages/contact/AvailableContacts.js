@@ -9,21 +9,21 @@ import classes from "./AvailableContacts.module.css";
 
 const AvailableContacts = props => {
   //const [contact, setContact] = useState([]);
-  const [show, setShow] = useState(false);
 
   const getContact = async () => {
     await props?.GetContact();
-    setShow(!show);
   };
   useEffect(() => {
     getContact();
   }, []);
+
   const contactList = props?.contact.map(meal => (
     <ContactItem
-      key={meal.id}
+      key={meal._id}
+      id={meal._id}
       name={meal.name}
       description={meal.description}
-      price={meal.number}
+      contact={meal.number}
     />
   ));
 
@@ -31,7 +31,7 @@ const AvailableContacts = props => {
     <div>
       <section className={classes.meals}>
         <Card>
-          <ul>{show && contactList}</ul>
+          <ul>{contactList}</ul>
         </Card>
       </section>
     </div>

@@ -2,12 +2,11 @@ import React, { useRef, useState, Fragment } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { bindActionCreators } from "@reduxjs/toolkit";
+import { SignUpUser } from "../store/actions";
 
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import ErrorModal from "../UI/ErrorModal";
-
-import { SignUpUser } from "../store/actions";
 
 import classes from "./AddUser.module.css";
 
@@ -73,7 +72,7 @@ const SignIn = props => {
       address: addressRef.current.value,
       position: posRef.current.value,
     };
-    console.log(user);
+
     props?.SignUpUser(user);
 
     const handleClick = () => {

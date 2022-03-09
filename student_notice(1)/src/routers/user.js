@@ -7,11 +7,11 @@ const router = new express.Router();
 router.post("/reg", async (req, res) => {
   try {
     const user = new User(req.body);
-    console.log(user);
+    
     await user.save();
-  
+
     const token = await user.generateAuthToken();
-    console.log(user);
+    
     res.status(201).send({ user, token });
     //res.status(201).send(user);
   } catch (e) {
@@ -34,10 +34,10 @@ router.get("/users/:id", auth, async (req, res) => {
 
 router.get("/getbyid/:email", async (req, res) => {
   const email = req.params.email;
-  console.log(req);
+  
   try {
     const user = await User.findByEmail(email);
-    console.log(user);
+
     if (!user) {
       return res.status(404).send();
     }

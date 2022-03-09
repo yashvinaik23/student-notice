@@ -23,11 +23,9 @@ const AddUser = props => {
     title: "",
     message: "",
   });
-  
 
   const addUserHandler = event => {
     event.preventDefault();
-    console.log(posRef.current.value);
 
     if (!emailRef.current.value.includes("@gmail.com")) {
       setError({
@@ -67,7 +65,6 @@ const AddUser = props => {
 
   return (
     <Fragment>
-      {console.log(error)}
       {error.status && (
         <ErrorModal
           title={error.title}

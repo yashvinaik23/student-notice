@@ -40,6 +40,6 @@
   border-color: #a2b7ff;
 }
 
-.invalid {
+.input invalid {
   border: 1px solid #ff0000;
 }

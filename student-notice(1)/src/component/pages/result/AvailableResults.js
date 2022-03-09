@@ -1,44 +1,56 @@
 import classes from "./AvailableResults.module.css";
 import ResultItem from "./ResultItem/ResultItem";
 import Card from "../../../UI/Card";
+import { useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux"
-import axios from "axios";
-import { useState } from "react";
+import { connect } from "react-redux";
+import { GetResult } from "../../../store/actions";
+import { useEffect } from "react";
 
-const AvailableResults = () => {
-  const [result, setResult] = useState([]);
-  const [show, setShow] = useState(false);
+const AvailableResults = props => {
+  const user = useSelector(state => state.user.user);
 
-  const getResult = () => {
-    axios.get("http://localhost:8000/results").then(response => {
-      setResult(response.data);
-      console.log(response.data);
-      setShow(!show);
-    });
+  const getResult = async () => {
+    await props?.GetResult(user);
   };
+  useEffect(() => {
+    getResult();
+  }, []);
 
-  const resultsList = result.map(meal => (
-    <ResultItem
-      key={meal.id}
-      name={meal.subject}
-      description={meal.status}
-      price={meal.marks}
-    />
-  ));
+  const resultsList = props?.result.map(meal => {
+    return (
+      <ResultItem
+        key={meal._id}
+        name={meal.subject}
+        status={meal.status}
+        price={meal.marks}
+      />
+    );
+  });
 
   return (
     <div>
-      <button className={classes.button} onClick={getResult}>
-        {show ? "Hide" : "Get Result"}
-      </button>
       <section className={classes.meals}>
         <Card>
-          <ul>{show && resultsList}</ul>
+          <ul>{resultsList}</ul>
         </Card>
       </section>
     </div>
   );
 };
 
-export default AvailableResults;
+const mapStateToProps = state => {
+  return {
+    result: state.user.result,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      GetResult: user => GetResult(user),
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AvailableResults);

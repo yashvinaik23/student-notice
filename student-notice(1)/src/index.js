@@ -4,11 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store/index";
-// import store from "./store/index";
-// import { createStore, compose, applyMiddleware } from "redux";
-// import reducer from "./NoticeStore/reducer/rootReducer";
-// import thunk from "redux-thunk";
- //const store = createStore(store, compose(applyMiddleware(thunk)));
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

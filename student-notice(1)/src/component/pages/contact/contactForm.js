@@ -21,6 +21,10 @@ const ContactForm = props => {
       email: emailRef.current.value,
     };
     props?.PostContact(contact);
+    nameRef.current.value = "";
+    descriptionRef.current.value = "";
+    numberRef.current.value = "";
+    emailRef.current.value = "";
   };
 
   return (

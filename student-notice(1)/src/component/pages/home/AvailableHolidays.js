@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { GetHoliday } from "../../../store/actions";
@@ -17,7 +17,8 @@ const AvailableHolidays = props => {
 
   const holidaysList = props?.holiday.map(meal => (
     <HolidayItem
-      key={meal.id}
+      key={meal._id}
+      id={meal._id}
       name={meal.name}
       description={meal.description}
       date={meal.date}

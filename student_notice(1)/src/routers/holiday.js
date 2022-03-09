@@ -13,16 +13,27 @@ router.get("/getholiday", async (req, res) => {
 });
 
 router.post("/holiday", async (req, res) => {
-  console.log(req.body);
   const holiday = new holidays({
     ...req.body,
   });
-  console.log(holiday);
+
   try {
     await holiday.save();
     res.status(201).send(holiday);
   } catch (e) {
     res.status(400).send(e);
+  }
+});
+
+router.delete("/holiday/:id", async (req, res) => {
+  try {
+    const holiday = await holidays.findByIdAndDelete(req.params.id);
+    if (!holiday) {
+      return res.status(404).send();
+    }
+    res.send(holiday);
+  } catch (e) {
+    res.status(500).send(e);
   }
 });
 

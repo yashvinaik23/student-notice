@@ -40,6 +40,7 @@ const userSchema = new mongoose.Schema({
   },
   position: { type: String, required: true },
   address: { type: String, required: true, trim: true },
+  file: { type: String },
   tokens: [
     {
       token: {
@@ -79,17 +80,17 @@ userSchema.methods.generateAuthToken = async function () {
 
 userSchema.statics.findByCredentials = async (email, password, position) => {
   const user = await User.findOne({ email });
-  //console.log(user);
-  // if (user.position !== position) {
-  //   throw new Error("Unable to login");
-  // }
+  
+  if (user.position !== position) {
+    throw new Error("Unable to login");
+  }
   if (!user) {
     return false;
   }
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    return false; //  throw new Error("Unable to login");
+    return false; 
   }
 
   return user;
@@ -97,7 +98,6 @@ userSchema.statics.findByCredentials = async (email, password, position) => {
 
 userSchema.statics.findByEmail = async email => {
   const user = await User.findOne({ email });
-  console.log(user);
 
   if (!user) {
     throw new Error("Unable to login");

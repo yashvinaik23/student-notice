@@ -15,6 +15,4 @@ const results = mongoose.model("result", {
   },
 });
 
-
-
 module.exports = results;

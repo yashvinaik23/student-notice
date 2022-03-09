@@ -13,7 +13,6 @@ router.get("/getcontact", async (req, res) => {
 });
 
 router.post("/contact", async (req, res) => {
-  console.log(req.body);
   const contact = new contacts({
     ...req.body,
   });
@@ -26,6 +25,16 @@ router.post("/contact", async (req, res) => {
   }
 });
 
+router.delete("/contact/:id", async (req, res) => {
+  try {
+    const contact = await contacts.findByIdAndDelete(req.params.id);
+    if (!contact) {
+      return res.status(404).send();
+    }
+    res.send(contact);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
 module.exports = router;
-
-

@@ -49,22 +49,14 @@ router.get("/results", async (req, res) => {
   } catch (e) {
     res.status(500).send();
   }
-  // results
-
-  //   .find({})
-  //   .then(results => {
-  //     res.send(results);
-  //   })
-  //   .catch(e => {
-  //     res.status(500).send();
-  //   });
+  
 });
 
 router.get("/results/:id", async (req, res) => {
   const _id = req.params.id;
-  console.log(_id);
+  
   try {
-    const result = await results.findOne({ owner: _id });
+    const result = await results.find({ owner: _id });
 
     if (!result) {
       return res.status(404).send();
@@ -75,24 +67,12 @@ router.get("/results/:id", async (req, res) => {
     res.status(500).send();
   }
 });
-// const _id = req.params.id;
-// results
-//   .findById(_id)
-//   .then result => {
-//     if ( result) {
-//       return res.status(404).send();
-//     }
-//     res.send result);
-//   })
-//   .catch(e => {
-//     res.status(500).send();
-//   });
 
-router.post("/result", auth, async (req, res) => {
-  console.log(req.user);
+
+router.post("/result", async (req, res) => {
   const result = new results({
     ...req.body,
-    // owner: req.user._id,
+   
   });
 
   try {
