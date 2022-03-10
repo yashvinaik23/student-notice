@@ -1,21 +1,20 @@
 import React, { Fragment, useState, useRef } from "react";
-
-import { useHistory } from "react-router-dom";
-
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
+import { LogInUser } from "../actions/actions";
 import ErrorModal from "../UI/ErrorModal";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
-import { LogInUser } from "../store/actions";
-
 import classes from "./AddUser.module.css";
 
 const AddUser = props => {
   const emailRef = useRef("");
   const passwordRef = useRef("");
-  const posRef = useRef("");
+
+  const [emailError, setEmailError] = useState(false);
+  const [passError, setPassError] = useState(false);
 
   const history = useHistory();
   const [error, setError] = useState({
@@ -28,30 +27,24 @@ const AddUser = props => {
     event.preventDefault();
 
     if (!emailRef.current.value.includes("@gmail.com")) {
-      setError({
-        title: "Invalid input",
-        message: "Please enter a valid email.",
-      });
+      setEmailError(true);
+
       return;
     }
 
-    if (passwordRef.current.value?.trim().length < 8) {
-      setError({
-        status: true,
-        title: "Invalid input",
-        message: "Please enter a valid password(min 8 characters)",
-      });
+    if (passwordRef.current.value.trim().length < 8) {
+      setPassError(true);
+
       return;
     }
     const user = {
       email: emailRef.current.value,
       password: passwordRef.current.value,
-      position: posRef.current.value,
     };
     props?.LogInUser(user);
 
     const handleClick = () => {
-      history.push("/");
+      history.push("/home");
     };
     handleClick();
   };
@@ -75,15 +68,13 @@ const AddUser = props => {
       <Card className={classes.input}>
         <form>
           <label htmlFor="email">Email</label>
+          {emailError && <h6>Invalid Email</h6>}
           <input id="email" type="text" ref={emailRef} />
 
           <label htmlFor="password">Password</label>
+          {passError && <h6>Invalid Password (min 8 characters needed)</h6>}
           <input id="password" type="password" ref={passwordRef} />
-          <label htmlFor="position">Position</label>
-          <select ref={posRef}>
-            <option value="Student">Student</option>
-            <option value="Teacher">Teacher</option>
-          </select>
+
           <Button onClick={addUserHandler}>Submit</Button>
           <Button onClick={props.formManipulate}>Sign Up</Button>
         </form>

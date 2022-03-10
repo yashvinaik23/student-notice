@@ -6,7 +6,6 @@ const initialUserState = {
   contact: [],
   result: [],
   isTeacher: false,
-  isLogin: false,
   position: "",
 };
 
@@ -20,7 +19,6 @@ const userSlice = createSlice({
     logIn(state, action) {
       state.user = action.payload;
       state.position = action.payload.position;
-      state.isLogin = true;
     },
     storeHoliday(state, action) {
       state.holiday = action.payload;
@@ -35,13 +33,10 @@ const userSlice = createSlice({
       state.holiday = state.holiday.concat(action.payload);
     },
     addContact(state, action) {
-      console.log(state.contact);
       state.contact = state.contact.concat(action.payload);
-      console.log(state.contact);
     },
-
     teacher(state) {
-      state.isTeacher = state.user.position === "Teacher" ? true : false;
+      state.isTeacher = true;
     },
     deleteHoliday(state, action) {
       state.holiday = state.holiday.filter(

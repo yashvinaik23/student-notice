@@ -23,16 +23,6 @@ app.listen(port, () => {
 const results = require("./models/results");
 const User = require("./models/user");
 
-// const main = async () => {
-//   // const task = await tasks.findById("61f923af8b1177dda13ed5d9");
-//   // await task.populate("owner"); //.execPopulate();
-//   // console.log(task.owner);
-//   const user = await User.findById("61f92223aec1233dd7138113");
-//   await user.populate("results"); //.execPopulate();
-//   console.log(user.results);
-// };
-// main();
-
 const jwt = require("jsonwebtoken");
 const myFunction = async () => {
   const token = jwt.sign({ _id: "abc123" }, "thisismynewcourse", {

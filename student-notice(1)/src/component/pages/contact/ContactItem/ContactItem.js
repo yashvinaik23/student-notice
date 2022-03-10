@@ -1,8 +1,9 @@
-import classes from "./ContactItem.module.css";
-import { useSelector } from "react-redux";
-import { bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
-import { DeleteContact } from "../../../../store/actions";
+import { bindActionCreators } from "@reduxjs/toolkit";
+
+import { DeleteContact } from "../../../../actions/actions";
+import { useSelector } from "react-redux";
+import classes from "./ContactItem.module.css";
 
 const ContactItem = props => {
   const contact = `contact: ${props.contact}`;

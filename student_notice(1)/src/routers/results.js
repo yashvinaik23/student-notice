@@ -17,10 +17,7 @@ router.patch("/results/:id", async (req, res) => {
     const result = await results.findById(req.params.id);
     updates.forEach(update => (result[update] = req.body[update]));
     await result.save();
-    // const result = await results.findByIdAndUpdate(req.params.id, req.body, {
-    //   new: true,
-    //   runValidators: true,
-    // });
+    
     if (result) {
       return res.status(404).send();
     }

@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialAuthState = {
   isLoggedIn: false,
+  notification: false,
+  open: false,
 };
 
 const loginSlice = createSlice({
@@ -9,10 +11,22 @@ const loginSlice = createSlice({
   initialState: initialAuthState,
   reducers: {
     login(state) {
-      state.isLoggedIn = true;
+      localStorage.setItem("state", true);
+      state.isLoggedIn = localStorage.getItem("state"); //true;
     },
     logout(state) {
-      state.isLoggedIn = false;
+      localStorage.removeItem("state");
+      state.isLoggedIn = localStorage.getItem("state") || false; //false;
+    },
+    showNotification(state, action) {
+      state.notification = {
+        status: action.payload.status,
+
+        message: action.payload.message,
+      };
+    },
+    open(state) {
+      state.open = !state.open;
     },
   },
 });

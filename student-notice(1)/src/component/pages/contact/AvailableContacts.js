@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
-import { GetContact } from "../../../store/actions";
+
+import { GetContact } from "../../../actions/actions";
 import ContactItem from "./ContactItem/ContactItem";
 import Card from "../../../UI/Card";
-
 import classes from "./AvailableContacts.module.css";
 
 const AvailableContacts = props => {

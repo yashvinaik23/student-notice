@@ -1,7 +1,8 @@
 import React, { Fragment, useRef, useState } from "react";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
-import { PostResult } from "../../../store/actions";
+
+import { PostResult } from "../../../actions/actions";
 import ErrorModal from "../../../UI/ErrorModal";
 import Card from "../../../UI/Card";
 import Button from "../../../UI/Button";
@@ -12,19 +13,37 @@ const ResultForm = props => {
   const subjectRef = useRef("");
   const marksRef = useRef("");
   const statusRef = useRef("");
+  const [emailError, setNameError] = useState(false);
+  const [marksError, setMarksError] = useState(false);
+  const [subjectError, setDateError] = useState(false);
   const [error, setError] = useState();
 
   const errorHandler = () => {
     setError(null);
   };
   const formHandler = () => {
+    if (!emailRef.current.value.includes("@gmail.com")) {
+      setError({
+        title: "Invalid input",
+        message: "Please enter a valid email.",
+      });
+      return;
+    }
+    if (subjectRef.current.value.trim().length === 0) {
+      setError({
+        title: "Invalid input",
+        message: "Please enter a valid sunject",
+      });
+      return;
+    }
+
     const result = {
       email: emailRef.current.value,
       subject: subjectRef.current.value,
       status: statusRef.current.value,
       marks: marksRef.current.value,
     };
-    console.log(result);
+
     props?.PostResult(result);
   };
 
@@ -47,7 +66,7 @@ const ResultForm = props => {
           <label htmlFor="status">Status</label>
           <input id="status" type="text" ref={statusRef} />
           <label htmlFor="marks">Marks</label>
-          <input id="subject" type="text" ref={marksRef} />
+          <input id="marks" type="Number" ref={marksRef} />
 
           <Button onClick={formHandler}>Submit</Button>
         </form>

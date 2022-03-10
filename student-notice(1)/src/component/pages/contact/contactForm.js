@@ -1,8 +1,8 @@
 import React, { Fragment, useRef } from "react";
-
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
-import { PostContact } from "../../../store/actions";
+
+import { PostContact } from "../../../actions/actions";
 import Card from "../../../UI/Card";
 import Button from "../../../UI/Button";
 import classes from "./ContactForm.module.css";

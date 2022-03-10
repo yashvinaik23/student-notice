@@ -7,11 +7,11 @@ const router = new express.Router();
 router.post("/reg", async (req, res) => {
   try {
     const user = new User(req.body);
-    
+
     await user.save();
 
     const token = await user.generateAuthToken();
-    
+
     res.status(201).send({ user, token });
     //res.status(201).send(user);
   } catch (e) {
@@ -34,7 +34,7 @@ router.get("/users/:id", auth, async (req, res) => {
 
 router.get("/getbyid/:email", async (req, res) => {
   const email = req.params.email;
-  
+
   try {
     const user = await User.findByEmail(email);
 
@@ -51,8 +51,7 @@ router.post("/users/login", async (req, res) => {
   try {
     const user = await User.findByCredentials(
       req.body.email,
-      req.body.password,
-      req.body.position
+      req.body.password
     );
     if (!user) return res.status(204).send({ message: "Wrong" });
     const token = await user.generateAuthToken();

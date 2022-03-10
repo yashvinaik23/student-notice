@@ -55,7 +55,7 @@ function Navbar() {
           <div className={classes.navlinks}>
             {isLogin && (
               <>
-                <Link to="/" className={classes.link}>
+                <Link to="/home" className={classes.link}>
                   Home
                 </Link>
                 <Link to="/result" className={classes.link}>
@@ -71,7 +71,7 @@ function Navbar() {
             )}
 
             {!isLogin && (
-              <Link to="/Login" className={classes.link}>
+              <Link to="/" className={classes.link}>
                 Log In
               </Link>
             )}

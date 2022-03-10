@@ -1,7 +1,6 @@
-import { loginActions } from "./logIn";
-
-import { userAction } from "./user";
 import axios from "axios";
+import { loginActions } from "../store/logIn";
+import { userAction } from "../store/user";
 
 export function SignUpUser(user) {
   return async dispatch => {
@@ -29,7 +28,6 @@ export const LogInUser = user => {
         user
       );
       if (response.status === 200) {
-        localStorage.setItem("isLoggedIn", "1");
         dispatch(loginActions.login());
 
         dispatch(userAction.logIn(response.data.user));
@@ -44,8 +42,7 @@ export const LogInUser = user => {
 };
 
 export const PostResult = result => {
-  return async () => {
-    console.log(result.email);
+  return async dispatch => {
     try {
       let response = await axios.get(
         `http://localhost:8000/getbyid/${result.email}`
@@ -55,16 +52,25 @@ export const PostResult = result => {
         marks: result.marks,
         owner: response.data,
       };
-      console.log(result1);
+
       let res = await axios.post("http://localhost:8000/result", result1);
       if (res.status === 201) {
-        console.log(res);
-        alert("Result added");
+        dispatch(loginActions.open());
+        dispatch(
+          loginActions.showNotification({
+            status: "success",
+            message: "Result added succeessfully!",
+          })
+        );
       }
-
-      console.log(res);
     } catch (err) {
-      alert(err);
+      dispatch(loginActions.open());
+      dispatch(
+        loginActions.showNotification({
+          status: "error",
+          message: "Something went wrong",
+        })
+      );
     }
   };
 };
@@ -75,9 +81,21 @@ export const PostContact = contact => {
       let response = await axios.post("http://localhost:8000/contact", contact);
       if (response.status === 201) {
         dispatch(userAction.addContact(response.data));
-        alert("Contact Added");
+        dispatch(loginActions.open());
+        dispatch(
+          loginActions.showNotification({
+            status: "success",
+            message: "Contact added Successfully!",
+          })
+        );
       } else {
-        alert("Invalid contact");
+        dispatch(loginActions.open());
+        dispatch(
+          loginActions.showNotification({
+            status: "error",
+            message: "Something went wrong",
+          })
+        );
       }
     } catch (err) {
       alert(err);
@@ -89,15 +107,27 @@ export const PostHoliday = holiday => {
   return async dispatch => {
     try {
       let response = await axios.post("http://localhost:8000/holiday", holiday);
-      console.log(response);
+
       if (response.status === 201) {
         dispatch(userAction.addHoliday(response.data));
-        alert("Holiday added");
+        dispatch(loginActions.open());
+        dispatch(
+          loginActions.showNotification({
+            status: "success",
+            message: "Holiday added Successfully!",
+          })
+        );
       } else {
-        alert("Invalid holiday");
+        dispatch(loginActions.open());
+        dispatch(
+          loginActions.showNotification({
+            status: "error",
+            message: "Something went wrong!",
+          })
+        );
       }
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
 };
@@ -120,6 +150,7 @@ export const GetHoliday = () => {
   return async dispatch => {
     try {
       let response = await axios.get("http://localhost:8000/getholiday");
+
       if (response.status === 404) {
         alert("Didn't get the Holidays");
       }
@@ -136,6 +167,7 @@ export const GetResult = user => {
       let response = await axios.get(
         `http://localhost:8000/results/${user._id}`
       );
+
       if (response.status === 404) {
         alert("Didn't get the results");
       }
@@ -146,14 +178,20 @@ export const GetResult = user => {
   };
 };
 
-//http://localhost:8000/holiday/62287018047dcf37e733d832
 export const DeleteHoliday = id => {
   return async dispatch => {
     try {
       let response = await axios.delete(`http://localhost:8000/holiday/${id}`);
+
       if (response.status === 200) {
-        alert("Deleted successfully");
         dispatch(userAction.deleteHoliday(response.data));
+        dispatch(loginActions.open());
+        dispatch(
+          loginActions.showNotification({
+            status: "success",
+            message: "Holiday deleted successfully!",
+          })
+        );
       }
     } catch (err) {
       alert(err);
@@ -166,8 +204,14 @@ export const DeleteContact = id => {
     try {
       let response = await axios.delete(`http://localhost:8000/contact/${id}`);
       if (response.status === 200) {
-        alert("Deleted successfully");
         dispatch(userAction.deleteContact(response.data));
+        dispatch(loginActions.open());
+        dispatch(
+          loginActions.showNotification({
+            status: "success",
+            message: "Contact deleted successfully!",
+          })
+        );
       }
     } catch (err) {
       alert(err);

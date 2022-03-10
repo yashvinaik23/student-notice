@@ -1,9 +1,9 @@
-import classes from "./HolidayItem.module.css";
 import { useSelector } from "react-redux";
-import { DeleteHoliday } from "../../../../store/actions";
-
-import { bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
+import { bindActionCreators } from "@reduxjs/toolkit";
+
+import { DeleteHoliday } from "../../../../actions/actions";
+import classes from "./HolidayItem.module.css";
 
 const HolidayItem = props => {
   const user = useSelector(state => state.user.user);

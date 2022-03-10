@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 
-//import AvailableHolidays from "./AvailableHolidays";
 import AvailableContact from "./AvailableContacts";
 import ContactForm from "./ContactForm";
 

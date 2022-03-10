@@ -43,3 +43,12 @@
 .input invalid {
   border: 1px solid #ff0000;
 }
+
+.input h6 {
+  margin-top: 0%;
+  margin-bottom: 0%;
+  color: #ff0000;
+}
+.error {
+  border-color: #ff0000;
+}

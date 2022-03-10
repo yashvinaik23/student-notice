@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
 import { loginActions } from "./store/logIn";
 import Navbar from "./component/navigation/Navbar";
 import Home from "./component/pages/home/home";
@@ -13,11 +15,16 @@ function App() {
 
   const dispatch = useDispatch();
 
-  function logoutHandler() {
-    localStorage.removeItem("isLoggedIn");
-
+  function Content() {
+    let history = useHistory();
     dispatch(loginActions.logout());
+
+    function logoutHandler() {
+      history.push("/");
+    }
+
     window.location.reload(false);
+    return <div>{logoutHandler}</div>;
   }
 
   return (
@@ -26,13 +33,13 @@ function App() {
       <Switch>
         {isLogin && (
           <>
-            <Route exact path="/" component={Home} />
+            <Route path="/home" component={Home} />
             <Route path="/result" component={Result} />
             <Route path="/contact" component={Contact} />
-            <Route path="/logout" component={logoutHandler} />
+            <Route path="/logout" component={Content} />
           </>
         )}
-        {!isLogin && <Route path="/login" component={Form} />}
+        <Route exact path="/" component={Form} />
       </Switch>
     </Router>
   );

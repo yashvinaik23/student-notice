@@ -1,11 +1,12 @@
-import classes from "./AvailableResults.module.css";
-import ResultItem from "./ResultItem/ResultItem";
-import Card from "../../../UI/Card";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { GetResult } from "../../../store/actions";
-import { useEffect } from "react";
+
+import ResultItem from "./ResultItem/ResultItem";
+import Card from "../../../UI/Card";
+import { GetResult } from "../../../actions/actions";
+import classes from "./AvailableResults.module.css";
 
 const AvailableResults = props => {
   const user = useSelector(state => state.user.user);
