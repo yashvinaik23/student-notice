@@ -36,3 +36,8 @@
   outline: none;
   border-color: #4f005f;
 }
+.input h6 {
+  margin-top: 0%;
+  margin-bottom: 0%;
+  color: #ff0000;
+}

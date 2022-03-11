@@ -47,7 +47,7 @@ function Navbar() {
       <CssBaseline />
       <Toolbar>
         <Typography variant="h4" className={classes.logo}>
-          {user.name}
+          {isLogin ? user.name : "Student Notice"}
         </Typography>
         {isMobile ? (
           <DrawerComponent />

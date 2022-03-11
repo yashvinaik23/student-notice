@@ -1,32 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialAuthState = {
-  isLoggedIn: false,
+  isLoggedIn: "",
   notification: false,
-  open: false,
+  open: "",
 };
+if (localStorage.getItem("logIn")) {
+  initialAuthState.isLoggedIn = localStorage.getItem("logIn");
+}
 
 const loginSlice = createSlice({
   name: "authentication",
   initialState: initialAuthState,
   reducers: {
     login(state) {
-      localStorage.setItem("state", true);
-      state.isLoggedIn = localStorage.getItem("state"); //true;
+      localStorage.setItem("logIn", true);
+      state.isLoggedIn = localStorage.getItem("logIn"); //true;
     },
     logout(state) {
-      localStorage.removeItem("state");
-      state.isLoggedIn = localStorage.getItem("state") || false; //false;
+      localStorage.removeItem("logIn");
+      state.isLoggedIn = localStorage.getItem("logIn"); //false;
     },
     showNotification(state, action) {
       state.notification = {
         status: action.payload.status,
-
         message: action.payload.message,
       };
+      state.open = true;
     },
-    open(state) {
-      state.open = !state.open;
+    openN(state) {
+      state.open = false;
     },
   },
 });

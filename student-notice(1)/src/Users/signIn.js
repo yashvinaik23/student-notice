@@ -12,8 +12,8 @@ const SignIn = props => {
   const [error, setError] = useState();
   const [nameError, setNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [passError, setPassError] = useState(false);
   const [contactError, setContactError] = useState(false);
+  const [passError, setPassError] = useState(false);
   const [addressError, setAddressError] = useState(false);
   const nameRef = useRef("");
   const emailRef = useRef("");

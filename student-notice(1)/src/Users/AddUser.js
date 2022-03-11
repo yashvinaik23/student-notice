@@ -28,13 +28,11 @@ const AddUser = props => {
 
     if (!emailRef.current.value.includes("@gmail.com")) {
       setEmailError(true);
-
       return;
     }
 
     if (passwordRef.current.value.trim().length < 8) {
       setPassError(true);
-
       return;
     }
     const user = {

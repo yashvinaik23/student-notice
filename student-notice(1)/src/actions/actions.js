@@ -7,12 +7,11 @@ export function SignUpUser(user) {
     try {
       let response = await axios.post("http://localhost:8000/reg", user);
       if (response.status === 201) {
-        localStorage.setItem("isLoggedIn", "1");
         dispatch(loginActions.login());
         dispatch(userAction.signIn(response.data.user));
         dispatch(userAction.teacher());
       } else {
-        alert("Invalid");
+        alert("Something went wrong please check inputs and try again");
       }
     } catch (err) {
       alert(err);
@@ -33,7 +32,7 @@ export const LogInUser = user => {
         dispatch(userAction.logIn(response.data.user));
         dispatch(userAction.teacher());
       } else {
-        alert("Invalid");
+        alert("User not found");
       }
     } catch (err) {
       alert(err);
@@ -55,7 +54,7 @@ export const PostResult = result => {
 
       let res = await axios.post("http://localhost:8000/result", result1);
       if (res.status === 201) {
-        dispatch(loginActions.open());
+        dispatch(loginActions.openN());
         dispatch(
           loginActions.showNotification({
             status: "success",
@@ -64,7 +63,7 @@ export const PostResult = result => {
         );
       }
     } catch (err) {
-      dispatch(loginActions.open());
+      dispatch(loginActions.openN());
       dispatch(
         loginActions.showNotification({
           status: "error",
@@ -81,7 +80,7 @@ export const PostContact = contact => {
       let response = await axios.post("http://localhost:8000/contact", contact);
       if (response.status === 201) {
         dispatch(userAction.addContact(response.data));
-        dispatch(loginActions.open());
+        dispatch(loginActions.openN());
         dispatch(
           loginActions.showNotification({
             status: "success",
@@ -89,7 +88,7 @@ export const PostContact = contact => {
           })
         );
       } else {
-        dispatch(loginActions.open());
+        dispatch(loginActions.openN());
         dispatch(
           loginActions.showNotification({
             status: "error",
@@ -110,7 +109,7 @@ export const PostHoliday = holiday => {
 
       if (response.status === 201) {
         dispatch(userAction.addHoliday(response.data));
-        dispatch(loginActions.open());
+        dispatch(loginActions.openN());
         dispatch(
           loginActions.showNotification({
             status: "success",
@@ -118,7 +117,7 @@ export const PostHoliday = holiday => {
           })
         );
       } else {
-        dispatch(loginActions.open());
+        dispatch(loginActions.openN());
         dispatch(
           loginActions.showNotification({
             status: "error",
@@ -137,7 +136,13 @@ export const GetContact = () => {
     try {
       let response = await axios.get("http://localhost:8000/getcontact");
       if (response.status === 404) {
-        alert("Didn't get the Contacts");
+        dispatch(loginActions.openN());
+        dispatch(
+          loginActions.showNotification({
+            status: "error",
+            message: "Contacts are not available!",
+          })
+        );
       }
       dispatch(userAction.storeContact(response.data));
     } catch (err) {
@@ -152,7 +157,13 @@ export const GetHoliday = () => {
       let response = await axios.get("http://localhost:8000/getholiday");
 
       if (response.status === 404) {
-        alert("Didn't get the Holidays");
+        dispatch(loginActions.openN());
+        dispatch(
+          loginActions.showNotification({
+            status: "error",
+            message: "Holidays are not available!",
+          })
+        );
       }
       dispatch(userAction.storeHoliday(response.data));
     } catch (err) {
@@ -169,7 +180,13 @@ export const GetResult = user => {
       );
 
       if (response.status === 404) {
-        alert("Didn't get the results");
+        dispatch(loginActions.openN());
+        dispatch(
+          loginActions.showNotification({
+            status: "error",
+            message: "Reslult is not available!",
+          })
+        );
       }
       dispatch(userAction.storeResult(response.data));
     } catch (err) {
@@ -185,7 +202,7 @@ export const DeleteHoliday = id => {
 
       if (response.status === 200) {
         dispatch(userAction.deleteHoliday(response.data));
-        dispatch(loginActions.open());
+        dispatch(loginActions.openN());
         dispatch(
           loginActions.showNotification({
             status: "success",
@@ -205,7 +222,7 @@ export const DeleteContact = id => {
       let response = await axios.delete(`http://localhost:8000/contact/${id}`);
       if (response.status === 200) {
         dispatch(userAction.deleteContact(response.data));
-        dispatch(loginActions.open());
+        dispatch(loginActions.openN());
         dispatch(
           loginActions.showNotification({
             status: "success",

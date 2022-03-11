@@ -1,33 +1,34 @@
 import React, { Fragment, useRef, useState } from "react";
 import { bindActionCreators } from "@reduxjs/toolkit";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { connect, useSelector } from "react-redux";
 
 import { PostHoliday } from "../../../actions/actions";
-import loginActions from "../../../store/logIn";
-import Snackbar from "@mui/material/Snackbar";
 import Card from "../../../UI/Card";
 import Button from "../../../UI/Button";
+import SnackbarUI from "../../../UI/snackbar";
 import classes from "./holidayForm.module.css";
 
 const HolidayForm = props => {
   const nameRef = useRef("");
   const descriptionRef = useRef("");
   const dateRef = useRef("");
+  const notification = useSelector(state => state.logIn.notification);
   const [nameError, setNameError] = useState(false);
   const [dateError, setDateError] = useState(false);
-  const notification = useSelector(state => state.logIn.notification);
-  const [open, setOpen] = useState(useSelector(state => state.logIn.open));
-  const dispatch = useDispatch();
 
   const formHandler = () => {
     if (nameRef.current.value.trim().length === 0) {
       setNameError(true);
       return;
+    } else {
+      setNameError(false);
     }
 
     if (dateRef.current.value.trim().length === 0) {
       setDateError(true);
       return;
+    } else {
+      setDateError(false);
     }
 
     const holiday = {
@@ -41,20 +42,9 @@ const HolidayForm = props => {
     dateRef.current.value = "";
   };
 
-  const handleClose = () => {
-    dispatch(loginActions.open());
-  };
-
   return (
     <Fragment>
-      {notification && (
-        <Snackbar
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          message={notification.message}
-        />
-      )}
+      {notification && <SnackbarUI message={notification.message} />}
       <Card className={classes.input}>
         <form>
           <label htmlFor="name">Holiday for</label>

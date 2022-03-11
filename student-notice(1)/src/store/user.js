@@ -1,24 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialUserState = {
-  user: { name: "Student Notice" },
+  user: "",
   holiday: [],
   contact: [],
   result: [],
   isTeacher: false,
   position: "",
 };
+if (localStorage.getItem("user")) {
+  initialUserState.user = JSON.parse(localStorage.getItem("user"));
+}
 
 const userSlice = createSlice({
   name: "user",
   initialState: initialUserState,
   reducers: {
     signIn(state, action) {
+      localStorage.setItem("user", JSON.stringify(action.payload));
+
       state.user = action.payload;
     },
     logIn(state, action) {
+      localStorage.setItem("user", JSON.stringify(action.payload));
       state.user = action.payload;
-      state.position = action.payload.position;
+    },
+    logOut() {
+      localStorage.removeItem("user");
     },
     storeHoliday(state, action) {
       state.holiday = action.payload;
