@@ -50,6 +50,11 @@ const ResultForm = props => {
     };
 
     props?.PostResult(result);
+
+    emailRef.current.value = "";
+    subjectRef.current.value = "";
+    statusRef.current.value = "";
+    marksRef.current.value = "";
   };
 
   return (

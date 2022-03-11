@@ -49,6 +49,7 @@ export const PostResult = result => {
       const result1 = {
         subject: result.subject,
         marks: result.marks,
+        status: result.status,
         owner: response.data,
       };
 
