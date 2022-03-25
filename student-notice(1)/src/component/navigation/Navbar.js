@@ -46,6 +46,7 @@ function Navbar() {
     <AppBar position="static">
       <CssBaseline />
       <Toolbar>
+        
         <Typography variant="h4" className={classes.logo}>
           {isLogin ? user.name : "Student Notice"}
         </Typography>

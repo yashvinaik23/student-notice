@@ -32,6 +32,24 @@ router.get("/users/:id", auth, async (req, res) => {
   }
 });
 
+router.patch('/users/:id', async (req, res) => {
+  const updates = Object.keys(req.body)
+  const allowedUpdates = ['name', 'email', 'password', 'contact','address']
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+  if (!isValidOperation) {
+      return res.status(400).send({ error: 'Invalid updates!' })
+  }
+
+  try {
+      updates.forEach((update) => req.user[update] = req.body[update])
+      await req.user.save()
+      res.send(req.user)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+})
+
 router.get("/getbyid/:email", async (req, res) => {
   const email = req.params.email;
 

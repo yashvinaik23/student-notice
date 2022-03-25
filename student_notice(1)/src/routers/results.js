@@ -11,7 +11,7 @@ router.patch("/results/:id", async (req, res) => {
   });
 
   if (!isValidOperation) {
-    return res.status(400).send({ error: "Invalid ipdates!" });
+    return res.status(400).send({ error: "Invalid updates!" });
   }
   try {
     const result = await results.findById(req.params.id);
@@ -19,7 +19,7 @@ router.patch("/results/:id", async (req, res) => {
     await result.save();
     
     if (result) {
-      return res.status(404).send();
+      return res.status(404).send(result);
     }
     res.send(result);
   } catch (e) {

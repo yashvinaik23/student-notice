@@ -10,6 +10,7 @@ import Card from "../UI/Card";
 import classes from "./AddUser.module.css";
 
 const AddUser = props => {
+  // console.log(BASE_URL);
   const emailRef = useRef("");
   const passwordRef = useRef("");
 

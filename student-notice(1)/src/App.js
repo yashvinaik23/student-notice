@@ -43,7 +43,7 @@ function App() {
             <Route path="/logout" component={Content} />
           </>
         )}
-        <Route exact path="/" component={Form} />
+        <Route path="/" component={Form} />
       </Switch>
     </Router>
   );
