@@ -44,6 +44,7 @@ function App() {
           </>
         )}
         <Route path="/" component={Form} />
+        {/* <Route path="/Signup" component={Form} /> */}
       </Switch>
     </Router>
   );
