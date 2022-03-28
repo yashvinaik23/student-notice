@@ -1,4 +1,5 @@
 import { useEffect,useState } from "react";
+import { useSelector } from "react-redux";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { styled } from "@mui/material/styles";
@@ -25,6 +26,7 @@ import {
 } from "@material-ui/core";
 
 import { GetContact } from "../../../actions/actions";
+import { DeleteContact } from "../../../actions/actions";
 
 const useStyles = makeStyles(() => ({
   body: {
@@ -73,18 +75,35 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const AvailableContacts = props => {
   const classes = useStyles();
+  const [open, setOpen] = useState({ open: false, id: "" });
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   //const [contact, setContact] = useState([]);
+  const user = useSelector(state => state.user.user);
+
+  const deleteHandler = (id) => {
+    // const id = props.id;
+    props?.DeleteContact(id);
+    setOpen({ open: false, id: null });
+  };
 
   const getContact = async () => {
+
     await props?.GetContact();
   };
   useEffect(() => {
     getContact();
   }, []);
 
-  const [open, setOpen] = useState({ dialog: false, id: "" });
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const handleDelete = (id) => {
+    setOpen({ open: true, id: id });
+  };
+
+  const handleClose=()=>{
+    setOpen({ open: false, id: null });
+  }
+
+  
 
   // const contactList = props?.contact.map(meal => (
   //   <ContactItem
@@ -103,7 +122,7 @@ const AvailableContacts = props => {
           <Grid item>
             <div className={classes.heading}>
               <Typography variant="h4" component="h2">
-                My Jobs
+                Available Contacts
               </Typography>
             </div>
           </Grid>
@@ -114,50 +133,30 @@ const AvailableContacts = props => {
           <Table aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Sr. No </StyledTableCell>
-                <StyledTableCell>Company Name</StyledTableCell>
-                <StyledTableCell>Logo</StyledTableCell>
-                <StyledTableCell>Title</StyledTableCell>
-                <StyledTableCell>Skills</StyledTableCell>
-                <StyledTableCell>Salary</StyledTableCell>
-                <StyledTableCell>Position</StyledTableCell>
-                <StyledTableCell>Job Types</StyledTableCell>
-                <StyledTableCell>Edit</StyledTableCell>
-                <StyledTableCell>Delete</StyledTableCell>
+                <StyledTableCell>Name </StyledTableCell>
+                <StyledTableCell>Description</StyledTableCell>
+                <StyledTableCell>Email</StyledTableCell>
+                <StyledTableCell>Contact</StyledTableCell>
+                {user.position === "Teacher" && <StyledTableCell>Delete</StyledTableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
-              {props?.job?.data?.getJob?.length &&
-                props?.job?.data?.getJob?.map((job, id) => (
+              {props?.contact.length &&
+                props?.contact.map((contact, id) => (
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
-                      {id + 1}
-                    </StyledTableCell>
-                    <StyledTableCell>{job.companyname}</StyledTableCell>
-                    <StyledTableCell>{job.Image}</StyledTableCell>
-                    <StyledTableCell>{job.title}</StyledTableCell>
-                    <StyledTableCell>{job.skill}</StyledTableCell>
-                    <StyledTableCell>{job.salary}</StyledTableCell>
-                    <StyledTableCell>{job.position}</StyledTableCell>
-                    <StyledTableCell>{job.jobType}</StyledTableCell>
-                    <StyledTableCell>
-                      <Button
-                        component={Link}
-                        to={`/editjob/${job._id}`}
-                        variant="outlined"
-                        // onClick={() => {navigate(`/editjob/${job._id}`)}}
-                      >
-                        Edit
-                      </Button>
-                    </StyledTableCell>
-                    <StyledTableCell>
+                    
+                    <StyledTableCell>{contact.name}</StyledTableCell>
+                    <StyledTableCell>{contact.description}</StyledTableCell>
+                    <StyledTableCell>{contact.email}</StyledTableCell>
+                    <StyledTableCell>{contact.number}</StyledTableCell>
+                    {user.position === "Teacher" && <StyledTableCell>
                       <Button
                         variant="outlined"
-                        onClick={() => deleteHandler(job._id)}
+                        onClick={() => handleDelete(contact._id)}
                       >
                         Delete
                       </Button>
-                    </StyledTableCell>
+                    </StyledTableCell>}
                   </StyledTableRow>
                 ))}
             </TableBody>
@@ -167,7 +166,7 @@ const AvailableContacts = props => {
 
       <Dialog
         fullScreen={fullScreen}
-        open={open.dialog}
+        open={open.open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
@@ -181,10 +180,10 @@ const AvailableContacts = props => {
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
-            Disagree
+            Cancel
           </Button>
-          <Button onClick={() => aggreDelete(open.id)} autoFocus>
-            Agree
+          <Button onClick={() => deleteHandler(open.id)} autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
@@ -201,6 +200,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       GetContact: () => GetContact(),
+      DeleteContact: id => DeleteContact(id),
     },
     dispatch
   );

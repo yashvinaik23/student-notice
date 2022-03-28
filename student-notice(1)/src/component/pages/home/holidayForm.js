@@ -2,13 +2,49 @@ import React, { Fragment, useRef, useState } from "react";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useSelector } from "react-redux";
 
+import {
+  Grid,
+  Paper,
+  Typography,
+  Button,
+  TextField,
+  makeStyles,
+  FormHelperText,
+} from '@material-ui/core';
+import blue from "@material-ui/core/colors/blue";
+
 import { PostHoliday } from "../../../actions/actions";
-import Card from "../../../UI/Card";
-import Button from "../../../UI/Button";
 import SnackbarUI from "../../../UI/snackbar";
-import classes from "./holidayForm.module.css";
+
+const useStyles = makeStyles(() => ({
+  body: {
+    padding: '60px 60px',
+    margin: '25px 50px',
+    border: `4px solid ${blue[800]}`,
+    borderRadius: 15,
+  },
+  inputBox: {
+    width: '300px',
+    margin: '-12px',
+  },
+  submitButton: {
+    width: '300px',
+    margin: '0px 15px',
+    backgroundColor: '#1565C0',
+    color: 'white',
+  },
+  error: {
+    color:'red',
+  },
+  LinkColor: {
+    textDecoration: 'none',
+    color: 'black',
+  },
+  
+}));
 
 const HolidayForm = props => {
+  const classes = useStyles();
   const nameRef = useRef("");
   const descriptionRef = useRef("");
   const dateRef = useRef("");
@@ -45,22 +81,66 @@ const HolidayForm = props => {
   return (
     <Fragment>
       {notification && <SnackbarUI message={notification.message} />}
-      <Card className={classes.input}>
-        <form>
-          <label htmlFor="name">Holiday for</label>
-          {nameError && <h6>Invalid Holiday</h6>}
-          <input id="name" type="text" ref={nameRef} />
-
-          <label htmlFor="description">Description</label>
-
-          <input id="description" type="text" ref={descriptionRef} />
-          <label htmlFor="date">Date</label>
-          {dateError && <h6>Invalid Holiday</h6>}
-          <input id="date" type="date" ref={dateRef} />
-
-          <Button onClick={formHandler}>Submit</Button>
-        </form>
-      </Card>
+      <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      // Change the size to fit the parent element of this div
+      width: '100%',
+      height: '100%',
+    }}>
+    {notification && <SnackbarUI message={notification.message} />}
+    <Paper elevation={3} className={classes.body}>
+        <Grid container direction="column" spacing={4} alignItems="center">
+          <Grid item>
+            {/*  Typography use for size or different heading tag */}
+  
+            <Typography variant="h4" component="h2">
+              Contact Form
+            </Typography>
+          </Grid>
+          <Grid item>
+            <TextField
+              id="name"
+              type="text"
+              label="Holiday for"
+              className={classes.inputBox}
+              inputRef={nameRef}
+              />
+          </Grid>
+          {nameError && <FormHelperText className={classes.error}>Invalid Holiday</FormHelperText>}
+          <Grid item>
+            <TextField
+              id="description"
+              type="text"
+              label="Description"
+              className={classes.inputBox}
+              inputRef={descriptionRef}/>
+          </Grid>
+          <Grid item>
+            <TextField
+              id="contact"
+              type="date"
+              className={classes.inputBox}
+              inputRef={dateRef}
+              />
+          </Grid>
+          {dateError && <FormHelperText className={classes.error}>Invalid Holiday</FormHelperText>}
+          <Grid item>
+            <Button
+              id="btnLogin"
+              variant="contained"
+              type="submit"
+              className={classes.submitButton}
+              onClick={formHandler}
+            >
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
+    </div>
     </Fragment>
   );
 };
